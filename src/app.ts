@@ -11,7 +11,7 @@ import morgan from 'morgan'
 import { variables } from './config/vars'
 const { logs } = variables
 
-export const app = express();
+const app = express();
 
 app.use(morgan(logs))
 app.use(actuator())
@@ -37,3 +37,5 @@ app.use("/docs", swaggerUi.serve, async (_req: ExRequest, res: ExResponse) => {
     swaggerUi.generateHTML(await import("../build/swagger.json"))
   );
 });
+
+export { app }
