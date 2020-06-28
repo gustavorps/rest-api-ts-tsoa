@@ -5,7 +5,7 @@ const { postgresDataBase, postgresUser, postgresPassword, postgresHost, postgres
 
 export const sequelize = new Sequelize(postgresDataBase, postgresUser, postgresPassword, {
     host: postgresHost,
-    dialect: postgresDialect
+    dialect: 'postgres'
 });
 
 export const handleSequelizeConnection = async () => {
