@@ -9,26 +9,24 @@ import * as express from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-  "User": {
+  "UserType": {
     "dataType": "refObject",
     "properties": {
       "id": { "dataType": "double", "required": true },
-      "email": { "dataType": "string", "required": true },
-      "name": { "dataType": "string", "required": true },
-      "status": { "dataType": "union", "subSchemas": [{ "dataType": "enum", "enums": ["Happy"] }, { "dataType": "enum", "enums": ["Sad"] }] },
-      "phoneNumbers": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+      "name": { "dataType": "string" },
+      "cellphone": { "dataType": "string" },
     },
     "additionalProperties": false,
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  "Pick_User.email-or-name-or-phoneNumbers_": {
+  "Pick_UserType.id-or-name-or-cellphone_": {
     "dataType": "refAlias",
-    "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "email": { "dataType": "string", "required": true }, "name": { "dataType": "string", "required": true }, "phoneNumbers": { "dataType": "array", "array": { "dataType": "string" }, "required": true } }, "validators": {} },
+    "type": { "dataType": "nestedObjectLiteral", "nestedProperties": { "id": { "dataType": "double", "required": true }, "name": { "dataType": "string" }, "cellphone": { "dataType": "string" } }, "validators": {} },
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   "UserCreationParams": {
     "dataType": "refAlias",
-    "type": { "ref": "Pick_User.email-or-name-or-phoneNumbers_", "validators": {} },
+    "type": { "ref": "Pick_UserType.id-or-name-or-cellphone_", "validators": {} },
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };

@@ -4,17 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.apiError = exports.notFound = exports.converter = exports.handler = void 0;
-var APIError_1 = require("../utils/APIError");
-var vars_1 = require("../config/vars");
-var http_status_1 = __importDefault(require("http-status"));
-var message_1 = __importDefault(require("../utils/message"));
-var env = vars_1.variables.env;
+const APIError_1 = require("../utils/APIError");
+const vars_1 = require("../config/vars");
+const http_status_1 = __importDefault(require("http-status"));
+const message_1 = __importDefault(require("../utils/message"));
+const { env } = vars_1.variables;
 /**
  * Error handler. Send stacktrace only during development
  * @public
  */
-var _handler = function (err, req, res, next) {
-    var response = {
+const _handler = (err, req, res, next) => {
+    const response = {
         code: err.status || '',
         message: err.message,
         title: err.title || message_1.default.TITLE.ERROR_DEFAULT,
@@ -34,10 +34,10 @@ exports.handler = _handler;
  * If error is not an instanceOf APIError, convert it.
  * @public
  */
-var _converter = function (err, req, res) {
-    var convertedError = err;
+const _converter = (err, req, res) => {
+    let convertedError = err;
     if (!(err instanceof APIError_1.APIError)) {
-        var options = {
+        const options = {
             message: err.message,
             status: ((err || {}).response || err).status || err.status || 500,
             stack: err.stack,
@@ -51,19 +51,17 @@ exports.converter = _converter;
  * Catch 404 and forward to error handler
  * @public
  */
-exports.notFound = function (req, res) {
-    var options = {
+exports.notFound = (req, res) => {
+    const options = {
         message: message_1.default.MESSAGE.ERROR_DEFAULT,
         status: http_status_1.default.NOT_FOUND,
         title: message_1.default.TITLE.ERROR_DEFAULT,
     };
-    var err = new APIError_1.APIError(options);
+    const err = new APIError_1.APIError(options);
     return exports.handler(err, req, res);
 };
-exports.apiError = function (error, title, message) {
-    return new APIError_1.APIError({
-        status: ((error || {}).response || {}).status || 500,
-        title: title,
-        message: message,
-    });
-};
+exports.apiError = (error, title, message) => new APIError_1.APIError({
+    status: ((error || {}).response || {}).status || 500,
+    title,
+    message,
+});

@@ -10,7 +10,6 @@ import methodOverride from 'method-override'
 import morgan from 'morgan'
 import { variables } from './config/vars'
 const { logs } = variables
-
 const app = express();
 
 app.use(morgan(logs))
@@ -29,6 +28,7 @@ app.use(compress())
 app.use(methodOverride())
 
 app.use(helmet())
+
 
 RegisterRoutes(app);
 
