@@ -1,5 +1,4 @@
-import { Sequelize, DataTypes, Model } from 'sequelize'
-// const sequelize = new Sequelize('sqlite::memory:');
+import { DataTypes, Model } from 'sequelize'
 import { sequelize } from '../config/db'
 
 export class User extends Model { }

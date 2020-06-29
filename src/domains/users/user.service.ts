@@ -1,40 +1,40 @@
 import { UserType } from "./userType";
 import { User as UserModel } from '../../models/User'
 
-// A post request should not contain an id.
 export type UserCreationParams = Pick<UserType, "id" | "name" | "cellphone">;
+export type UserUpdateParams = Pick<UserType, "name" | "cellphone">;
 
 export class UsersService {
-  public get(id: number, name?: string): any {
-    // let userId;
-    // let userName;
-    // let userCellphone;
-    return UserModel.findAll({ attributes: ['id', 'name', 'cellphone'], where: { id } })
-    // .then((result) => result.every((element) => {
-    //   userId = element.getDataValue('id')
-    //   userName = element.getDataValue('name')
-    //   userCellphone = element.getDataValue('cellphone')
+  public get(id?: number, name?: string, cellphone?: string): Promise<any> {
+    let parameter
+    if (id) parameter = { id }
+    else if (name) parameter = { name }
+    else parameter = { cellphone }
 
-    //   console.log({
-    //     userId,
-    //     userName,
-    //     userCellphone
-    //   });
-    //   return {
-    //     userId,
-    //     userName,
-    //     userCellphone
-    //   }
-
-    // }))
-
+    return UserModel.findOne({ attributes: ['id', 'name', 'cellphone'], where: { ...parameter } })
   }
 
-  public create(userCreationParams: UserCreationParams): any {
-    return {
-      // id: Math.floor(Math.random() * 10000), // Random
-      // status: "Happy",
-      // ...userCreationParams,
-    };
+  public getUserById(id: number): Promise<any> {
+    return UserModel.findOne({ attributes: ['id', 'name', 'cellphone'], where: { id } })
+  }
+
+  public create(userCreationParams: UserCreationParams): Promise<any> {
+    return UserModel.create({ ...userCreationParams })
+  }
+
+  public update(id: any, userUpdateParams: UserUpdateParams): Promise<any> {
+    return UserModel.update({ ...userUpdateParams }, { where: { id } })
+  }
+
+  public delete(id: number): any {
+    return UserModel.findOne({
+      where: { id }
+    }).then((user: any) => {
+      if (!user) return Promise.resolve('User not found to delete')
+      UserModel.destroy({
+        where: { id }
+      })
+      return Promise.resolve('User deleted')
+    })
   }
 }

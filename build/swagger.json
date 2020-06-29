@@ -19,9 +19,6 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"id"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -38,14 +35,26 @@
 						"type": "string"
 					}
 				},
-				"required": [
-					"id"
-				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"UserCreationParams": {
 				"$ref": "#/components/schemas/Pick_UserType.id-or-name-or-cellphone_"
+			},
+			"Pick_UserType.name-or-cellphone_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"cellphone": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"UserUpdateParams": {
+				"$ref": "#/components/schemas/Pick_UserType.name-or-cellphone_"
 			}
 		},
 		"securitySchemes": {}
@@ -60,7 +69,7 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/users/{userId}": {
+		"/users/search": {
 			"get": {
 				"operationId": "GetUser",
 				"responses": {
@@ -78,9 +87,9 @@
 				"security": [],
 				"parameters": [
 					{
-						"in": "path",
-						"name": "userId",
-						"required": true,
+						"in": "query",
+						"name": "id",
+						"required": false,
 						"schema": {
 							"format": "double",
 							"type": "number"
@@ -92,6 +101,98 @@
 						"required": false,
 						"schema": {
 							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "cellphone",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/users/{id}": {
+			"get": {
+				"operationId": "GetUserById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserType"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateUser",
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserUpdateParams"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
 						}
 					}
 				]

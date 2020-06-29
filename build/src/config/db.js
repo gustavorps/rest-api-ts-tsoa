@@ -15,7 +15,7 @@ const sequelize_1 = require("sequelize");
 const { postgresDataBase, postgresUser, postgresPassword, postgresHost, postgresDialect } = vars_1.variables;
 exports.sequelize = new sequelize_1.Sequelize(postgresDataBase, postgresUser, postgresPassword, {
     host: postgresHost,
-    dialect: postgresDialect
+    dialect: 'postgres'
 });
 exports.handleSequelizeConnection = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
