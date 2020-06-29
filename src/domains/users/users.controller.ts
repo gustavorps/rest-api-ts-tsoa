@@ -4,33 +4,55 @@ import {
   Get,
   Path,
   Post,
+  Patch,
+  Delete,
   Query,
   Route,
-  SuccessResponse,
+  SuccessResponse
 } from "tsoa";
 import { UserType } from "./userType";
-import { UsersService, UserCreationParams } from "./user.service";
+import { UsersService, UserCreationParams, UserUpdateParams } from "./user.service";
 
 @Route("users")
 export class UsersController extends Controller {
-  @Get("{userId}")
+  @Get("search")
   public async getUser(
-    @Path() userId: number,
-    @Query() name?: string
+    @Query() id?: number,
+    @Query() name?: string,
+    @Query() cellphone?: string,
   ): Promise<UserType> {
-    const result = new UsersService().get(userId, name);
-    console.log(result);
-
-    return result
+    return new UsersService().get(id, name, cellphone);
   }
 
-  @SuccessResponse("201", "Created") // Custom success response
+  @Get("{id}")
+  public async getUserById(@Path() id: number): Promise<UserType> {
+    return new UsersService().getUserById(id);
+  }
+
+  @SuccessResponse("201", "Created")
   @Post()
   public async createUser(
     @Body() requestBody: UserCreationParams
   ): Promise<void> {
-    this.setStatus(201); // set return status 201
+    this.setStatus(201);
     new UsersService().create(requestBody);
     return;
+  }
+
+  @SuccessResponse("200", "OK")
+  @Patch('{id}')
+  public async updateUser(
+    @Patch() id: number,
+    @Body() requestBody: UserUpdateParams
+  ): Promise<void> {
+    this.setStatus(200);
+    new UsersService().update(id, requestBody);
+    return;
+  }
+
+  @SuccessResponse("200", "OK")
+  @Delete('{id}')
+  public async deleteUser(id: number): Promise<any> {
+    return await new UsersService().delete(id)
   }
 }
